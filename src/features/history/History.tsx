@@ -1,14 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Image, StyleSheet, TextInput, View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, TextInput, View, Text, FlatList, Button, TouchableOpacity } from 'react-native'
 import COLORS from '../../constants/colors'
 import { FONT_FAMILIES } from '../../constants/fonts'
 import { MyState } from '../../utils/createReducer'
+import { NAVIGATORS } from '../../constants/navigators';
+import { UserType } from '../login/Login'
 
-export interface HistoryProps extends MyState{
+interface Item {
+    index: number
+    item: string
+}
+export interface HistoryProps extends MyState {
     getBrushHistoryResult?: BrushRecord[]
     error: any
     route: any
-    getBrushHistory?: (email: string, password: string) => void
+    navigation: any
+    getBrushHistory?: () => void
 }
 
 export type BrushRecord = {
@@ -18,24 +25,65 @@ export type BrushRecord = {
 }
 
 const History = (props: HistoryProps) => {
+
+    const [lines, setLines] = useState<string[]>([])
+    const [user, setUser] = useState<UserType>()
+    useEffect(() => {
+        const userInfo: UserType = props.route.params.userData
+        setUser(userInfo)
+        if (props.getBrushHistory) props.getBrushHistory()
+    }, [])
+
+    useEffect(() => {
+        if (props.getBrushHistoryResult) {
+            let temp: string[] = []
+            props.getBrushHistoryResult.map((brushRecord, index) => {
+                temp = [...temp, user?.name + ' brushed ' + brushRecord.arch + ' teetch at ' + brushRecord.date]
+            })
+            setLines(temp)
+        }
+    }, [props.getBrushHistoryResult])
+
+    const onPressLogout = () => {
+        props.navigation.navigate(NAVIGATORS.LOGIN.name)
+    }
+
+    const renderEmptyContainer = () => {
+        return (
+            <View style={styles.emptyMessageContainer}>
+                <Text style={styles.emptyMessage}>No results found</Text>
+            </View>
+        )
+    }
+
+    const renderListItem = (item: Item) => {
+        return (
+            <Text style={styles.item}>{item.item}</Text>
+        )
+    }
     return (
-        <View>
+        <View style={styles.parent}>
+            <View style={styles.toolbar} />
+            <Text style={styles.title}>Home</Text>
+            <View style={styles.space} >
+                <FlatList 
+                    style={[styles.listContainer]}
+                    data={lines}
+                    renderItem={renderListItem}
+                    ListEmptyComponent={() => renderEmptyContainer()}/>
+            </View>
+            <View style={styles.buttonLayout}>
+                <Button
+                    title={"LOG OUT"}
+                    color={COLORS.blue}
+                    accessibilityLabel="Learn more about this purple button"
+                    onPress={onPressLogout} />
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-    },
-    imageStyle: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover',
-    },
     emptyMessageContainer: {
         textAlign: 'center',
         flex: 1,
@@ -52,45 +100,36 @@ const styles = StyleSheet.create({
         height: '100%',
         color: COLORS.black,
     },
-    wrapper: {
-        marginBottom: 10,
+    parent: {
+        flex: 1
+    },
+    space: {
         flex: 1,
-        flexDirection: 'row',
-        paddingVertical: 5,
-        paddingHorizontal: 20,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.darkGrey
+        marginHorizontal: 15
     },
-    wrapperInfo: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between'
+    buttonLayout: {
+        marginHorizontal: 80,
+        marginTop: 40,
+        marginBottom: 20
     },
-    childView: {
-        flexDirection: 'row',
-        marginLeft: 10,
-        alignItems: 'center'
+    toolbar: {
+        backgroundColor: COLORS.colorPrimary,
+        height: 56,
+        alignSelf: 'stretch',
+        textAlign: 'center',
     },
-    userAvatar: {
-        width: 60,
-        height: 60,
-        borderRadius: 20,
-        resizeMode: 'cover',
-    },
-    userName: {
-        fontFamily: FONT_FAMILIES.OPEN_SANS,
-        alignSelf: 'auto',
+    item: {
         fontSize: 13,
-        fontWeight: '700',
-        marginLeft: 10,
-        flex: 1,
+        alignSelf: 'auto',
+        color: COLORS.black,
     },
-    newRatingBar: {
-        flex: 1,
-        marginLeft: 10,
-    },
+    title: {
+        alignSelf: 'auto',
+        fontSize: 36,
+        fontWeight: '300',
+        marginStart: 40,
+        marginVertical: 20
+    }
 });
 
 export default History
