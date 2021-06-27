@@ -6,7 +6,7 @@ const NavigatorWrapper = ()=>{
   return (
     <>
       <RootNavigator />
-      {/* <LoadingIndicatorContainer requestCount={10}/> */}
+      <LoadingIndicatorContainer loading={false} requestCount={10}/>
     </>
   )
 }

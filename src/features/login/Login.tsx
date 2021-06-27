@@ -28,6 +28,7 @@ export type UserType = {
 const Login = (props: LoginProps) => {
     return (
         <View>
+            <Text>Hello world!</Text>
         </View>
     )
 }
