@@ -17,7 +17,7 @@ const handleSignupRequest = (state: SignupProps) => {
 }
 
 const handleSignupSuccess = (state: SignupProps, action: any) => {
-  const loginResponse = action.payload.result.data
+  const loginResponse = action.payload.result
   return update(state, {
     loading: { $set: false },
     error: { $set: null },

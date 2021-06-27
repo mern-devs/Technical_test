@@ -6,6 +6,7 @@ import { LoginProps } from '../Login'
 const initialState: LoginProps = {
   loading: false,
   error: null,
+  navigation: null,
   route: null,
 }
 
@@ -17,7 +18,7 @@ const handleLoginRequest = (state: LoginProps) => {
 }
 
 const handleLoginSuccess = (state: LoginProps, action: any) => {
-  const loginResponse = action.payload.result.data
+  const loginResponse = action.payload.result
   return update(state, {
     loading: { $set: false },
     error: { $set: null },

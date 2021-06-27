@@ -7,7 +7,7 @@ export const loginRequest = (email: string, password: string) => ({
     email,
     password
   },
-  showLoading: false,
+  showLoading: true,
 })
 
 export const loginSuccess = (result: any) => ({

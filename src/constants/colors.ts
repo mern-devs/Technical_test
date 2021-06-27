@@ -1,4 +1,5 @@
 const COLORS = {
+  colorPrimary: '#2196F3',
   transparent: 'transparent',
   black: '#000000',
   white: '#FFFFFF',
@@ -31,6 +32,7 @@ const COLORS = {
   lightGreen: '#31a09c',
   darkGrey: '#b0b3c8',
   pink: '#FFC0CB',
+  blue: '#0000FF'
 }
 
 export default COLORS

@@ -6,17 +6,18 @@ import { LoadingIndicatorProps } from '../LoadingIndicator'
 const initialState: LoadingIndicatorProps = {
   requestCount: 0,
   loading: false,
+  visible: false,
 }
 
 const handleShowLoadingIndicator = (state: LoadingIndicatorProps) => {
   return update(state, {
-    loading: { $set: true },
+    visible: { $set: true },
   })
 }
 
 const handleHideLoadingIndicator = (state: LoadingIndicatorProps) => {
   return update(state, {
-    loading: { $set: false },
+    visible: { $set: false },
   })
 }
 

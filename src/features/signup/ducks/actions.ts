@@ -8,7 +8,7 @@ export const signupRequest = (name: string, email: string, password: string) => 
     email,
     password
   },
-  showLoading: false,
+  showLoading: true,
 })
 
 export const signupSuccess = (result: any) => ({

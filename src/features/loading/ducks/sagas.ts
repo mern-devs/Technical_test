@@ -2,9 +2,9 @@ import { put, select, takeEvery } from 'redux-saga/effects'
 import { isNil } from 'lodash'
 import * as Actions from './actions'
 
-function* handleShowLoading(action) {
+function* handleShowLoading(action: any) {
   const { showLoading } = action
-  const requestCount = yield select((state) => state.loading.requestCount)
+  const requestCount = yield select((state: any) => state.loading.requestCount)
 
   if (requestCount === 0 && showLoading) {
     yield put(Actions.showLoadingIndicator())

@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Image, StyleSheet, TextInput, View, Text, FlatList, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, Button } from 'react-native'
 import COLORS from '../../constants/colors'
-import { FONT_FAMILIES } from '../../constants/fonts'
 import { MyState } from '../../utils/createReducer'
+import { NAVIGATORS } from '../../constants/navigators';
 
-export interface LoginProps extends MyState{
+export interface LoginProps extends MyState {
     loginResult?: LoginResponseType
     error: any
     route: any
+    navigation: any
     login?: (email: string, password: string) => void
 }
 
@@ -25,81 +26,112 @@ export type UserType = {
     updatedAt: string;
 }
 
+
 const Login = (props: LoginProps) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const onPressBottom = () => {
+        props.navigation.navigate(NAVIGATORS.SIGN_UP.name)
+    }
+    useEffect(() => {
+        if (props.loginResult) {
+            const result = props.loginResult
+            if (result.success) {
+                props.navigation.navigate(NAVIGATORS.HISTORY.name, {
+                    userData: result.user
+                })
+            }
+        }
+    }, [props.loginResult])
     return (
-        <View>
-            <Text>Hello world!</Text>
+        <View style={styles.parent}>
+            <View style={styles.toolbar} />
+            <Text style={styles.title}>Sign in</Text>
+            <TextInput
+                multiline={false}
+                numberOfLines={1}
+                onChangeText={(text: string) => {
+                    setEmail(text)
+                }}
+                keyboardType={'email-address'}
+                placeholder={"Email"}
+                value={email}
+                style={styles.input}
+            />
+            <TextInput
+                multiline={false}
+                numberOfLines={1}
+                onChangeText={(text: string) => {
+                    setPassword(text)
+                }}
+                secureTextEntry
+                placeholder={"Password"}
+                value={password}
+                style={styles.input}
+            />
+            <View style={styles.buttonLayout}>
+                <Button
+                    title={"LOGIN"}
+                    color={COLORS.blue}
+                    accessibilityLabel="Learn more about this purple button"
+                    onPress={() => {
+                        if (props.login) props.login(email, password)
+                    }} />
+            </View>
+            <View style={styles.space} />
+            <TouchableOpacity
+                onPress={onPressBottom}
+                style={styles.bottomLayout}
+            >
+                <Text style={styles.bottomText}>
+                    Don't have an account? Sign Up
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    parent: {
+        flex: 1
+    },
+    space: {
+        flex: 1
+    },
+    bottomLayout: {
+        alignContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    bottomText: {
+        color: COLORS.blue,
+        fontSize: 18,
+        fontWeight: '300'
+    },
+    buttonLayout: {
+        marginHorizontal: 80,
+        marginTop: 40
+    },
     input: {
         height: 40,
         margin: 12,
         borderWidth: 1,
+        paddingStart: 10,
+        fontSize: 20
     },
-    imageStyle: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover',
-    },
-    emptyMessageContainer: {
+    toolbar: {
+        backgroundColor: COLORS.colorPrimary,
+        height: 56,
+        alignSelf: 'stretch',
         textAlign: 'center',
-        flex: 1,
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
-    listContainer: {
-
-    },
-    emptyMessage: {
-        flex: 1,
-        paddingVertical: 50,
-        height: '100%',
-        color: COLORS.black,
-    },
-    wrapper: {
-        marginBottom: 10,
-        flex: 1,
-        flexDirection: 'row',
-        paddingVertical: 5,
-        paddingHorizontal: 20,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.darkGrey
-    },
-    wrapperInfo: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-    },
-    childView: {
-        flexDirection: 'row',
-        marginLeft: 10,
-        alignItems: 'center'
-    },
-    userAvatar: {
-        width: 60,
-        height: 60,
-        borderRadius: 20,
-        resizeMode: 'cover',
-    },
-    userName: {
-        fontFamily: FONT_FAMILIES.OPEN_SANS,
+    title: {
         alignSelf: 'auto',
-        fontSize: 13,
-        fontWeight: '700',
-        marginLeft: 10,
-        flex: 1,
-    },
-    newRatingBar: {
-        flex: 1,
-        marginLeft: 10,
-    },
+        fontSize: 36,
+        fontWeight: '300',
+        marginStart: 40,
+        marginVertical: 20
+    }
 });
 
 export default Login

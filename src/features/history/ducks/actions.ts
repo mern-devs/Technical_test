@@ -4,7 +4,7 @@ import * as ActionTypes from './action-types'
 export const getBrushHistoryRequest = () => ({
   type: ActionTypes.GET_BRUSH_HISTORY_REQUEST,
   payload: {},
-  showLoading: false,
+  showLoading: true,
 })
 
 export const getBrushHistorySuccess = (result: any) => ({

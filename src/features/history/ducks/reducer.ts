@@ -17,7 +17,7 @@ const handleHistoryRequest = (state: HistoryProps) => {
 }
 
 const handleHistorySuccess = (state: HistoryProps, action: any) => {
-  const historyResponse = action.payload.result.data
+  const historyResponse = action.payload.result
   return update(state, {
     loading: { $set: false },
     error: { $set: null },
