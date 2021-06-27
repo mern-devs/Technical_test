@@ -37,8 +37,9 @@ const History = (props: HistoryProps) => {
     useEffect(() => {
         if (props.getBrushHistoryResult) {
             let temp: string[] = []
+            props.getBrushHistoryResult.sort((a, b) => a.date.localeCompare(b.date))
             props.getBrushHistoryResult.map((brushRecord, index) => {
-                temp = [...temp, user?.name + ' brushed ' + brushRecord.arch + ' teetch at ' + brushRecord.date]
+                temp = [...temp, user?.name + ' brushed ' + brushRecord.arch + ' teeth at ' + brushRecord.date]
             })
             setLines(temp)
         }
