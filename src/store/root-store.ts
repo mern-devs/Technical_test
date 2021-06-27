@@ -1,10 +1,10 @@
 export const storeInstances: any[] = []
 
-const addRefStore:(store: any) =>void  = (store: any) => {
+const addRefStore: (store: any) => void = (store: any) => {
   storeInstances.push(store)
 }
 
-const dispatch:(action: any) =>void = (action: any) => {
+const dispatch: (action: any) => void = (action: any) => {
   if (storeInstances.length === 0) {
     return
   }
@@ -12,7 +12,7 @@ const dispatch:(action: any) =>void = (action: any) => {
   storeInstances[0].dispatch(action)
 }
 
-const getState:()=>void = () => {
+const getState: () => void = () => {
   if (storeInstances.length === 0) {
     return
   }

@@ -7,6 +7,9 @@ import { historySaga } from '../features/history'
 function* rootSaga() {
   yield all([
     loadingSaga(),
+    loginSaga(),
+    signupSaga(),
+    historySaga(),
   ])
 }
 
